@@ -1,0 +1,19 @@
+{
+  "compact": true,
+  "sourceMaps": false,
+  "comments": false,
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "modules": "commonjs",
+        "targets": {
+          "node": 24
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-transform-modules-commonjs"
+  ]
+}
