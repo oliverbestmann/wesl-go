@@ -1,22 +1,22 @@
 {
-  "name": "wesl",
+  "name": "wesl-go",
   "version": "1.0.0",
   "description": "",
   "license": "ISC",
   "author": "",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "wesl.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "@babel/cli": "^8.0.4",
-    "@babel/core": "^8.0.1",
-    "@babel/plugin-transform-modules-commonjs": "^8.0.1",
-    "@babel/preset-env": "^8.0.2",
-    "babel-preset-minify": "^0.5.2"
+    "@babel/cli": "8.0.4",
+    "@babel/core": "8.0.1",
+    "@babel/plugin-transform-modules-commonjs": "8.0.1",
+    "@babel/preset-env": "8.0.2",
+    "babel-preset-minify": "0.5.2"
   },
   "dependencies": {
-    "wesl": "^0.7.28"
+    "wesl": "0.7.28"
   }
 }
