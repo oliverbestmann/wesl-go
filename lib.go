@@ -30,11 +30,6 @@ type Options struct {
 	// Enables imports like `import mypkg::foo` alongside `import package::foo`.
 	// Should be a valid WGSL identifier (use underscores, not hyphens or slashes).
 	PackageName string
-
-	// Root module name: file path (`./main.wesl`), module path (`package::main`), or bare name (`main`).
-	// For apps, the root module contains entry points (`@compute`, `@vertex`, `@fragment`).
-	// For libraries, it defines the public API.
-	RootModuleName string
 }
 
 // Files describe an in-memory file system that contains all files
