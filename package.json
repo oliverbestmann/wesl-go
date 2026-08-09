@@ -17,6 +17,6 @@
     "babel-preset-minify": "0.5.2"
   },
   "dependencies": {
-    "wesl": "0.7.28"
+    "wesl": "0.7.29"
   }
 }
