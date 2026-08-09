@@ -1,4 +1,4 @@
-package wegl
+package wesl
 
 import (
 	"embed"
