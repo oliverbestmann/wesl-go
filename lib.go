@@ -82,9 +82,15 @@ func New() *Transpiler {
 func (t *Transpiler) Transpile(entrypoint string, opts Options) (string, error) {
 	params := map[string]any{
 		"weslSrc":        opts.Files,
-		"constants":      opts.Constants,
-		"conditions":     opts.Conditions,
 		"rootModuleName": entrypoint,
+	}
+
+	if opts.Constants != nil {
+		params["constants"] = opts.Constants
+	}
+
+	if opts.Conditions != nil {
+		params["conditions"] = opts.Conditions
 	}
 
 	vm := t.vm

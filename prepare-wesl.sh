@@ -10,3 +10,4 @@ trap 'rm -f wesl-raw.js' EXIT
 
 node_modules/.bin/babel wesl-raw.js > wesl.js
 
+go test -v ./...
