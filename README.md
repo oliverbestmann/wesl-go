@@ -111,10 +111,11 @@ out, err := tr.Transpile("main.wesl", wesl.Options{
 ## Console output
 
 The embedded transpiler may call `console.log` and friends. By default this output is discarded.
-Set the package-level `Stdout` to capture it:
+`Stdout` is an `atomic.Pointer[io.Writer]`; store a writer into it to capture the output:
 
 ```go
-wesl.Stdout = os.Stdout
+var w io.Writer = os.Stdout
+wesl.Stdout.Store(new(w))
 ```
 
 ## Updating the embedded transpiler
@@ -132,3 +133,5 @@ to `wesl.js`.
 
 - `New()` panics if the embedded JavaScript fails to load. Create the transpiler once and reuse it.
 - The transpiler is not safe for concurrent use; create one per goroutine or guard it with a mutex.
+- The implementation may switch to [wesl-rs](https://github.com/wgsl-tooling-wg/wesl-rs) compiled to
+  WASM in the future, but this is not certain yet.
