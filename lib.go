@@ -122,10 +122,10 @@ func must[T any](value T, err error) T {
 }
 
 const linkWrapper = `
-	var exports = {};
+	var module = {};
 
 	(function _link(opts) {
-		return exports.link(opts).catch(function (err) {
+		return module.exports.link(opts).catch(function (err) {
 			return {error: err};
 		});
 	})
