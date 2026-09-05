@@ -13,6 +13,6 @@
     "esbuild": "^0.28.2"
   },
   "dependencies": {
-    "wesl": "0.7.29"
+    "wesl": "0.7.31"
   }
 }
