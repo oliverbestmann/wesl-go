@@ -1,8 +1,10 @@
 # wesl-go
 
-Transpile [WESL](https://wesl-lang.dev/) shaders to WGSL from Go. The transpiler runs the
-official `wesl` JavaScript implementation embedded via the [goja](https://github.com/dop251/goja)
-JavaScript runtime, so no Node.js is required at runtime.
+Transpile [WESL](https://wesl-lang.dev/) shaders to WGSL (WebGPU Shading Language) from Go. The
+transpiler runs the official `wesl` JavaScript implementation in the
+[goja](https://github.com/dop251/goja) JavaScript runtime, so you do not need Node.js at runtime.
+When you build for WebAssembly (`GOOS=js`), the transpiler runs in the browser's JavaScript engine
+via `syscall/js` instead of goja.
 
 ## Installation
 
@@ -43,8 +45,8 @@ func main() {
 
 ### Loading files from an `fs.FS`
 
-`FilesOf` walks a filesystem and collects every `.wesl` and `.wgsl` file, which is handy with
-`embed`:
+`FilesOf` walks a filesystem and collects every `.wesl` and `.wgsl` file. This works with an
+`embed.FS`:
 
 ```go
 //go:embed shaders
@@ -110,13 +112,16 @@ out, err := tr.Transpile("main.wesl", wesl.Options{
 
 ## Console output
 
-The embedded transpiler may call `console.log` and friends. By default this output is discarded.
-`Stdout` is an `atomic.Pointer[io.Writer]`; store a writer into it to capture the output:
+The embedded transpiler may call `console.log`, `console.info`, `console.warn`, and
+`console.error`. By default this output is discarded. `Stdout` is an `atomic.Pointer[io.Writer]`;
+store a writer in it to capture the output:
 
 ```go
 var w io.Writer = os.Stdout
 wesl.Stdout.Store(new(w))
 ```
+
+Under `GOOS=js` the output goes to the browser console and `Stdout` has no effect.
 
 ## Updating the embedded transpiler
 
@@ -133,5 +138,7 @@ to `wesl.js`.
 
 - `New()` panics if the embedded JavaScript fails to load. Create the transpiler once and reuse it.
 - The transpiler is not safe for concurrent use; create one per goroutine or guard it with a mutex.
+- Under `GOOS=js` the transpiler loads its JavaScript with `new Function`. If your page sets a
+  Content-Security-Policy, it must allow `'unsafe-eval'`.
 - The implementation may switch to [wesl-rs](https://github.com/wgsl-tooling-wg/wesl-rs) compiled to
-  WASM in the future, but this is not certain yet.
+  WebAssembly in the future.

@@ -1,5 +1,5 @@
-// Package wesl embeds the official WESL JavaScript transpiler and runs it via
-// the goja JavaScript runtime, letting Go code link WESL/WGSL sources into a
+// Package wesl embeds the official WESL JavaScript transpiler and runs it in
+// a JavaScript runtime (goja, or the host runtime when built for GOOS=js), letting Go code link WESL/WGSL sources into a
 // single WGSL string without a Node.js dependency.
 package wesl
 
@@ -10,8 +10,6 @@ import (
 	"io/fs"
 	"strings"
 	"sync/atomic"
-
-	"github.com/dop251/goja"
 )
 
 // weslSource holds the bundled wesl JavaScript, embedded at build time.
@@ -21,6 +19,7 @@ var weslSource string
 
 // Stdout, if set, receives console output (console.log/info/warn/error) from
 // the embedded transpiler. When nil (the default) that output is discarded.
+// Under GOOS=js the host console is used and Stdout has no effect.
 var Stdout atomic.Pointer[io.Writer]
 
 // Options configures a single Transpile call.
@@ -93,30 +92,15 @@ func FilesOf(fsys fs.FS) (Files, error) {
 // runtime and is not safe for concurrent use; create one per goroutine or
 // guard it with a mutex. It can be reused across many Transpile calls.
 type Transpiler struct {
-	vm   *goja.Runtime
-	link goja.Callable
+	engine engine
 }
 
-// New creates a Transpiler by spinning up a goja runtime and loading the
+// New creates a Transpiler by spinning up a JavaScript runtime and loading the
 // embedded wesl JavaScript. It panics if the embedded source fails to load;
 // since that only happens on a broken build, reuse a single Transpiler rather
 // than creating one per call.
 func New() *Transpiler {
-	vm := goja.New()
-
-	registerConsole(vm)
-	// registerRegExpHack(vm)
-
-	// create the link function
-	link, ok := goja.AssertFunction(must(vm.RunString(linkWrapper)))
-	if !ok {
-		panic("link is not a function")
-	}
-
-	// parse the wesl.js source
-	must(vm.RunString(weslSource))
-
-	return &Transpiler{vm: vm, link: link}
+	return &Transpiler{engine: newEngine()}
 }
 
 // Transpile links the module graph rooted at entrypoint (a file name such as
@@ -149,26 +133,10 @@ func (t *Transpiler) Transpile(entrypoint string, opts Options) (string, error) 
 		params["libs"] = libs
 	}
 
-	// transpile
-	result, err := t.link(t.vm.GlobalObject(), t.vm.ToValue(params))
-	if err != nil {
-		return "", fmt.Errorf("transpile: %w", err)
-	}
-
-	// wait for the promise to finish
-	result = result.Export().(*goja.Promise).Result()
-
-	// check for an error
-	if errorStr := result.ToObject(t.vm).Get("error"); errorStr != nil {
-		return "", fmt.Errorf("transpiling failed: %s", errorStr)
-	}
-
-	// now extract the wgsl code
-	output := result.ToObject(t.vm).Get("dest").String()
-	return output, nil
+	return t.engine.link(params)
 }
 
-// toJS converts the bundle into the goja-compatible map shape expected by the
+// toJS converts the bundle into the map shape expected by the
 // wesl JavaScript library's WeslBundle.
 func (b Bundle) toJS() map[string]any {
 	js := map[string]any{
@@ -186,55 +154,4 @@ func (b Bundle) toJS() map[string]any {
 	}
 
 	return js
-}
-
-// must panics on error, returning the value otherwise. Used for setup steps
-// that can only fail on a broken build.
-func must[T any](value T, err error) T {
-	if err != nil {
-		panic(err)
-	}
-	return value
-}
-
-// linkWrapper is the JavaScript glue evaluated once at startup. It exposes a
-// callable that invokes the bundle's exported link() and normalizes rejected
-// promises into a resolved {error} object, so Go only has to inspect the
-// result value.
-const linkWrapper = `
-	var module = {};
-
-	(function _link(opts) {
-		return module.exports.link(opts).catch(function (err) {
-			return {error: err};
-		});
-	})
-`
-
-// registerConsole installs a console object whose log/info/warn/error methods
-// forward to the package-level Stdout (or discard output when it is nil).
-func registerConsole(vm *goja.Runtime) {
-	print := func(values ...goja.Value) {
-		w := Stdout.Load()
-		if w == nil {
-			return
-		}
-
-		var anyValues []any
-		for _, value := range values {
-			anyValues = append(anyValues, value)
-		}
-
-		_, _ = fmt.Fprintln(*w, anyValues...)
-	}
-
-	err := vm.Set("console", map[string]any{
-		"log":   print,
-		"info":  print,
-		"warn":  print,
-		"error": print,
-	})
-	if err != nil {
-		panic(err)
-	}
 }
