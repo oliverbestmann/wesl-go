@@ -1,5 +1,5 @@
 // Package wesl embeds the official WESL JavaScript transpiler and runs it in
-// a JavaScript runtime (goja, or the host runtime when built for GOOS=js), letting Go code link WESL/WGSL sources into a
+// a JavaScript runtime (ekuma, or the host runtime when built for GOOS=js), letting Go code link WESL/WGSL sources into a
 // single WGSL string without a Node.js dependency.
 package wesl
 

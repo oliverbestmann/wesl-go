@@ -2,9 +2,9 @@
 
 Transpile [WESL](https://wesl-lang.dev/) shaders to WGSL (WebGPU Shading Language) from Go. The
 transpiler runs the official `wesl` JavaScript implementation in the
-[goja](https://github.com/dop251/goja) JavaScript runtime, so you do not need Node.js at runtime.
+[ekuma](https://github.com/hajimehoshi/ekuma) JavaScript engine (pure Go), so you do not need Node.js at runtime.
 When you build for WebAssembly (`GOOS=js`), the transpiler runs in the browser's JavaScript engine
-via `syscall/js` instead of goja.
+via `syscall/js` instead of ekuma.
 
 ## Installation
 
