@@ -4,6 +4,8 @@ github.com/ebitengine/purego v0.11.3 h1:OB+JLpdm7ioymhyA+6s5kbb/uOuYycAgL8NNTFc5
 github.com/ebitengine/purego v0.11.3/go.mod h1:DCHPP08djqhNSoTfImcnHYQRZmd0qhakvrozqaEYhGQ=
 github.com/hajimehoshi/ekuma v0.0.0-20261117101154-7d4904718612 h1:m1w3roePo6lHA3Myc0NX4oExkQgJ63mn1COEtFNLcsg=
 github.com/hajimehoshi/ekuma v0.0.0-20261117101154-7d4904718612/go.mod h1:MfYQ/nnlaDN9XQQVeqEni3jUlkFpPmaQgjeAxHvnYQQ=
+github.com/hajimehoshi/ekuma v0.0.0-20261121162834-73a9320a928f h1:VpnX0eX0+7r5dlqBx1mc668MHnJtcvt/0JYccSEZDdk=
+github.com/hajimehoshi/ekuma v0.0.0-20261121162834-73a9320a928f/go.mod h1:MfYQ/nnlaDN9XQQVeqEni3jUlkFpPmaQgjeAxHvnYQQ=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/testify v1.11.1 h1:7s2iGBzp5EwR7/aIZr8ao5+dra3wiQyKjjFuvgVKu7U=
