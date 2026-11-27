@@ -3,7 +3,7 @@ module github.com/oliverbestmann/wesl-go
 go 1.27
 
 require (
-	github.com/hajimehoshi/ekuma v0.0.0-20261123193334-9e59ceeacbc0
+	github.com/hajimehoshi/ekuma v0.2.0
 	github.com/stretchr/testify v1.11.1
 )
 

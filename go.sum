@@ -2,8 +2,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/ebitengine/purego v0.11.3 h1:OB+JLpdm7ioymhyA+6s5kbb/uOuYycAgL8NNTFc5MLg=
 github.com/ebitengine/purego v0.11.3/go.mod h1:DCHPP08djqhNSoTfImcnHYQRZmd0qhakvrozqaEYhGQ=
-github.com/hajimehoshi/ekuma v0.0.0-20261123193334-9e59ceeacbc0 h1:cOQ69UkRgKwt1LOi53MXO5NMVopvoob9KLZ6B7kWJuo=
-github.com/hajimehoshi/ekuma v0.0.0-20261123193334-9e59ceeacbc0/go.mod h1:+d/DctFCsiyi3JVuntlcLfuO/70OYfOegGFBpnIDMMI=
+github.com/hajimehoshi/ekuma v0.2.0 h1:iZ631nhiZJjDr7+gZ34KYqh92nzU/OXsk4K25T/2WNA=
+github.com/hajimehoshi/ekuma v0.2.0/go.mod h1:+d/DctFCsiyi3JVuntlcLfuO/70OYfOegGFBpnIDMMI=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/testify v1.11.1 h1:7s2iGBzp5EwR7/aIZr8ao5+dra3wiQyKjjFuvgVKu7U=

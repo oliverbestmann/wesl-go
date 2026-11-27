@@ -44,7 +44,7 @@ func newEkumaEngine() *ekumaEngine {
 	})
 
 	console := map[string]any{"log": print, "info": print, "warn": print, "error": print}
-	if err := vm.Global().Set("console", console); err != nil {
+	if err := vm.Global().Set(ctx, "console", console); err != nil {
 		panic(err)
 	}
 
@@ -55,13 +55,13 @@ func newEkumaEngine() *ekumaEngine {
 	module := vm.ValueOf(map[string]any{})
 	must(wrapper.Invoke(ctx, module))
 
-	exports := must(module.Get("exports"))
-	link := must(exports.Get("link"))
+	exports := must(module.Get(ctx, "exports"))
+	link := must(exports.Get(ctx, "link"))
 	if link.Type() != ekuma.TypeFunction {
 		panic("link is not a function")
 	}
 
-	jsonParse := must(must(vm.Global().Get("JSON")).Get("parse"))
+	jsonParse := must(must(vm.Global().Get(ctx, "JSON")).Get(ctx, "parse"))
 
 	return &ekumaEngine{vm: vm, jsonParse: jsonParse, linkFn: link}
 }
